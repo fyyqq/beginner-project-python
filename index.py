@@ -101,28 +101,39 @@ def check_winning(columns):
 
 def spin(balance, amount_bet):
     slots = create_slots_machine(ROWS, COLS, symbol_values)
-    # slots = [['D', 'B', 'C'], ['D', 'D', 'C'], ['D', 'C', 'C']]
     print_slots_machine(slots)
     symbols, lines = check_winning(slots)
+    current_balance = balance
     if len(symbols) > 0:
         print("You Won")
         print(f"You have winning on { len(symbols) } lines")
         for symbol in symbols:
             print(f"You have winning on { symbol } symbol")
-        print(f"Balance: ${ (amount_bet * len(symbols)) + balance }")
+        current_balance = (amount_bet * len(symbols)) + balance
+        print(f"Balance: ${ current_balance }")
     else:
         print("You Lose")
-        print(f"Balance: ${ amount_bet - balance }")
+        current_balance = balance - amount_bet
+        print(f"Balance: ${ current_balance }")
+    repeat(current_balance)
+
+def repeat(balance):
+    while True:
+        spin_option = input("Press 'Enter' to continue (q to quit): ")
+        if spin_option == 'q' or spin_option == 'Q':
+            print("Thank you for playing with us")
+            break
+        else:
+            main(balance)
+            break
 
 
-def main():
-    amount = deposit()
+def main(amount):
     lines = bet_lines()
     amount_lines = amount_per_lines(lines, amount)
     print(f"Deposit: ${amount}")
     print(f"Lines: {lines}")
     print(f"Bet Amount: ${amount_lines}")
-    print(f"Balance: ${amount - amount_lines}")
 
     while True:
         spin_option = input("Press 'Enter' to spin (q to quit): ")
@@ -133,4 +144,5 @@ def main():
             spin(amount, amount_lines)
             break
 
-main()
+amount = deposit()
+main(amount)
