@@ -21,6 +21,17 @@ def generate_password(password_length, numbers, special_character):
         values = random.choice(character)
         pwd += values
 
+        if values in digits:
+            has_number = True
+        elif values in special:
+            has_special = True
+
+        meets_criteria = True
+        if numbers:
+            meets_criteria_number = has_number
+        if special_character:
+            meets_criteria = meets_criteria and has_special
+
     return pwd
 
 
